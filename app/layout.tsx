@@ -1,14 +1,7 @@
-import localFont from "next/font/local";
 import "./globals.css";
 import Footer from './components/footer';
 import Header from "./components/header";
 
-// Remover fontes duplicadas e corrigir peso
-const proximaNovaSemibold = localFont({
-  src: "/fonts/proxima-nova/semibold.otf",
-  variable: "--font-proxima-nova-semibold",
-  weight: "600",  // Defina um peso válido para a fonte Semibold
-});
 
 export const metadata = {
   title: "CiniCritic",
@@ -22,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={`${proximaNovaSemibold.variable} antialiased`}>
+      <body className={`antialiased`}>
         <Header />
         <main>{children}</main>
         <Footer />
