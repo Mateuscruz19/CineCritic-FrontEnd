@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Search, Menu } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,17 +14,19 @@ const Header = () => {
   };
 
   return (
-    <header className="relative z-10 text-white bg-gray-900 shadow-lg">
+<header className="fixed top-0 left-0 right-0 z-50 text-white bg-gray-900 shadow-lg transition-shadow duration-300 ease-in-out p-3">
       <div className="container mx-auto px-4 py-2">
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image 
-              src="/images/logos/logo5.png" 
-              className="-mb-1" 
-              alt="CiniCritic Logo" 
-              width={35} 
-              height={35} 
-            />
+            <Link href="/">
+              <Image 
+                src="/images/logos/logo5.png" 
+                className="-mb-1" 
+                alt="CiniCritic Logo" 
+                width={35} 
+                height={35} 
+              />
+            </Link>
             <div className="hidden lg:flex items-center bg-gray-800 rounded-lg h-10">
               <Search className="w-10 h-10 text-white p-2" />
               <input
@@ -54,14 +57,14 @@ const Header = () => {
                 <>
                   <li>
                     <a 
-                      href="#" 
+                      href="/registrar" 
                       className="block w-full lg:w-auto text-center bg-red-600 text-white px-4 py-1 rounded-full hover:bg-red-500 transition duration-300">
-                      JUNTE-SE AO CINECRITIC
+                      JUNTE SE AO CINECRITIC
                     </a>
                   </li>
                   <li>
                     <a 
-                      href="#" 
+                      href="/login" 
                       className="block w-full lg:w-auto text-center bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-500 transition duration-300">
                       ENTRAR
                     </a>

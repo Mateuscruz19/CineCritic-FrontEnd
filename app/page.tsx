@@ -1,154 +1,146 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import AppShowcaseSection from "./components/showcase";
 
 const HomePage = () => {
+  const [popularMovies, setPopularMovies] = useState<Filme[]>([]);
+  const [current, setCurrent] = useState(1);
+
+  // Definição da interface do Filme
+  interface Filme {
+    id: number;
+    title: string;
+    release_date: string;
+    overview: string;
+    poster_path: string;
+    vote_average: number;
+    vote_count: number;
+  }
+
+  useEffect(() => {
+    const fetchPopularMovies = async () => {
+      try {
+        const options = {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWJmYTZkMjAyZjU4NDBmYWI1MDk3ZTg2NWIyMjkxNSIsInN1YiI6IjY0OGM1Zjc1NTU5ZDIyMDExYzRiNTA5NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9nGuXFcVtAx3oG_lGMd9pTlRyF3_ks9Qadn7CDE5MZA',
+          },
+        };
+
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/popular?language=pt-BR&page=${current}`,
+          options
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar os dados");
+        }
+
+        const data = await response.json();
+        setPopularMovies(data.results);
+      } catch (error) {
+        console.error("Erro na busca dos filmes populares:", error);
+      }
+    };
+
+    fetchPopularMovies();
+  }, [current]);
+
   return (
-    <main className="relative z-10">
+    <main className="z-10">
+      <div className="w-full h-[75vh] flex items-center justify-center relative overflow-hidden">
+        {popularMovies.slice(11,14).map((movie, index) => (
+          <div
+            key={movie.id}
+            className="absolute top-0 h-full w-1/3"
+            style={{
+              left: `${index * 33.33}%`,
+              backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.poster_path})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'top center',
+            }}
+          />
+        ))}
+        <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+          <section className="text-center z-10">
+            <Image
+              src="/images/logos/logo2.png"
+              alt="CineCritic Logo"
+              width={220}
+              height={60}
+              className="mx-auto mb-4"
+            />
+            <h2 className="text-4xl font-bold mb-4">
+              Acompanhe. Descubra. Compartilhe.
+            </h2>
+            <p className="text-xl mb-12">
+              Acompanhe os programas e filmes que você assiste.
+              <br />
+              Descubra o que está em alta e onde transmitir. Compartilhe
+              comentários, recomendações e classificações.
+            </p>
+            <a
+              href="/dashboard"
+              className="bg-red-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition duration-300"
+            >
+              EXPERIMENTE →
+            </a>
+          </section>
+        </div>
+      </div>
 
-     <div className="w-full h-[75vh] bg-[url('/images/batman.jpg')] bg-cover bg-center flex items-center justify-center">
-  <div className="bg-black w-full h-full bg-opacity-60 flex items-center justify-center">
-    <section className="text-center">
-      <Image
-        src="/images/logos/logo2.png"
-        alt="CineCritic Logo"
-        width={220}
-        height={60}
-        className="mx-auto mb-4"
-      />
-      <h2 className="text-4xl font-bold mb-4">
-        Acompanhe. Descubra. Compartilhe.
-      </h2>
-      <p className="text-xl mb-12">
-        Acompanhe os programas e filmes que você assiste.<br />
-        Descubra o que está em alta e onde transmitir. Compartilhe
-        comentários, recomendações e classificações.
-      </p>
-      <a
-        href="#"
-        className="bg-red-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition duration-300"
-      >
-        ASSISTA AGORA →
-      </a>
-    </section>
-  </div>
-</div>
+      
+      <AppShowcaseSection />
 
-
-
-      <section className="mb-12 mt-12">
+      <section className="mb-12 max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-2xl font-bold">Top Shows</h3>
+          <h3 className="text-2xl font-bold">Top Filmes Populares</h3>
           <a href="#" className="text-red-500 hover:text-red-400">
-            SEE MORE →
+            DESCUBRA →
           </a>
         </div>
         <div className="grid grid-cols-4 gap-4">
-          <ShowCard
-            title="The Lord of the Rings: The Rings of Power"
-            year="2022"
-            watchers="15,923"
-            plays="63,692"
-          />
-          <ShowCard
-            title="Tulsa King"
-            year="2022"
-            watchers="12,733"
-            plays="49,223"
-          />
-          <ShowCard
-            title="Agatha All Along"
-            year="2024"
-            watchers="11,745"
-            plays="35,626"
-          />
-          <ShowCard title="From" year="2022" watchers="14,485" plays="52,745" />
+          {popularMovies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              title={movie.title}
+              year={movie.release_date.split("-")[0]}
+              posterPath={movie.poster_path}
+              rating={movie.vote_average.toFixed(1)}
+            />
+          ))}
         </div>
-      </section>
-
-      <section className="mb-12">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-2xl font-bold">Top Movies</h3>
-          <a href="#" className="text-red-500 hover:text-red-400">
-            SEE MORE →
-          </a>
-        </div>
-        <div className="grid grid-cols-4 gap-4">
-          <MovieCard
-            title="Wolfs"
-            year="2024"
-            watchers="11,037"
-            plays="16,783"
-          />
-          <MovieCard
-            title="Blink Twice"
-            year="2024"
-            watchers="6,904"
-            plays="8,328"
-          />
-          <MovieCard
-            title="It Ends With Us"
-            year="2024"
-            watchers="5,646"
-            plays="7,529"
-          />
-          <MovieCard
-            title="Deadpool & Wolverine"
-            year="2024"
-            watchers="4,383"
-            plays="5,845"
-          />
-        </div>
-      </section>
-
-      <section className="mb-12">
-        <h3 className="text-2xl font-bold mb-4">Popular Lists</h3>
       </section>
     </main>
   );
 };
 
-interface StreamingServiceLogoProps {
-  name: string;
-  bgColor: string;
-  cn: string;
-  imageUrl?: string;
-}
-
-const StreamingServiceLogo = ({
-  name,
-  bgColor,
-  imageUrl,
-  cn,
-}: StreamingServiceLogoProps) => (
-  <div
-    className={`flex items-center space-x-2 ${bgColor} h-12 px-4 rounded justify-center`}
-  >
-    {imageUrl && <img src={imageUrl} alt={name} className={cn} />}
-    <span className="font-bold text-sm">{name}</span>
-  </div>
-);
-
-interface ShowCardProps {
+// Componente para renderizar filmes
+interface MovieCardProps {
   title: string;
   year: string;
-  watchers: string;
-  plays: string;
+  posterPath: string;
+  rating: string;
 }
 
-const ShowCard = ({ title, year, watchers, plays }: ShowCardProps) => (
-  <div className="bg-gray-900 rounded-lg overflow-hidden">
-    <img src="/images/psda.jpg" alt={title} className="w-full h-auto" />
+const MovieCard = ({ title, year, posterPath, rating }: MovieCardProps) => (
+  <div className="bg-gray-900 rounded-lg overflow-hidden shadow-md">
+    <img
+      src={`https://image.tmdb.org/t/p/w500${posterPath}`}
+      alt={title}
+      className="w-full h-[400px] object-cover"
+    />
     <div className="p-4">
       <h4 className="font-semibold truncate">{title}</h4>
       <p className="text-gray-400 text-sm">{year}</p>
       <div className="mt-2 text-sm">
-        <span className="text-red-500">{watchers} watchers</span>
-        <span className="text-gray-400 ml-2">{plays} plays</span>
+        <span className="text-red-500">{rating}/10</span>
       </div>
     </div>
   </div>
 );
-
-const MovieCard = ShowCard;
 
 export default HomePage;

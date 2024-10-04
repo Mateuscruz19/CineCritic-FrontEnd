@@ -15,6 +15,9 @@ const config: Config = {
       fontFamily: {
         'proxima-nova': ['var(--font-proxima-nova-semibold)', 'sans-serif'],
       },
+      scrollBehavior: {
+        smooth: 'smooth',
+      },
     },
   },
   plugins: [],
