@@ -142,29 +142,28 @@ interface Movie {
   vote_average: number;
 }
 
-// Componente para o card de filmes
 const MovieCard: React.FC<{ movie: Movie; generateSlug: (title: string) => string }> = ({ movie, generateSlug }) => (
-    <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
-      <Link href={`/dashboard/filme/${generateSlug(movie.title)}`}>
-        <Image
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-          width={500}
-          height={750}
-          className="w-full h-auto"
-        />
-      </Link>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-1 truncate">{movie.title}</h3>
-        <p className="text-gray-400 text-sm mb-2">{new Date(movie.release_date).getFullYear()}</p>
-        <div className="flex items-center">
-          <Star className="text-yellow-400 mr-1" size={16} />
-          <span>{movie.vote_average.toFixed(1)}</span>
-        </div>
+  <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+    <Link href={`/dashboard/filme/${movie.id}`}>
+      <Image
+        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        alt={movie.title}
+        width={500}
+        height={750}
+        className="w-full h-auto"
+      />
+    </Link>
+    <div className="p-4">
+      <h3 className="font-semibold text-lg mb-1 truncate">{movie.title}</h3>
+      <p className="text-gray-400 text-sm mb-2">{new Date(movie.release_date).getFullYear()}</p>
+      <div className="flex items-center">
+        <Star className="text-yellow-400 mr-1" size={16} />
+        <span>{movie.vote_average.toFixed(1)}</span>
       </div>
     </div>
-  );
-  
+  </div>
+);
+
 
 // Componente para o card de atividades
 interface ActivityCardProps {
