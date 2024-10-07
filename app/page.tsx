@@ -95,7 +95,41 @@ const HomePage = () => {
       
       <AppShowcaseSection />
 
-      <section className="mb-12 max-w-7xl mx-auto">
+      <div className="w-full h-[55vh] bg-[url('/images/backgroundnetflix.png')] bg-cover bg-center flex flex-col items-center justify-center">
+  <div className="bg-black w-full h-full bg-opacity-60 flex flex-col items-center justify-center relative">
+    
+
+    <div className="absolute top-0 w-full h-[1px] bg-white"></div>
+
+    <section className="text-center">
+      <h2 className="text-4xl font-bold mb-4">
+        Descubra onde assistir programas e filmes
+      </h2>
+      <p className="text-xl mb-12">
+        Links diretos para centenas de serviços de streaming em 139 países. Defina seus <br />
+        favoritos e receba emails quando novos programas e filmes estiverem disponíveis para assistir.
+      </p>
+      <a
+        href="#"
+        className="bg-red-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition duration-300"
+      >
+        ASSISTA AGORA →
+      </a>
+    </section>
+
+    <section className="mb-12 mt-12 flex justify-center space-x-4">
+      <StreamingServiceLogo name="NETFLIX" bgColor="bg-red-600" />
+      <StreamingServiceLogo name="Disney+"
+       bgColor="bg-blue-700" />
+      <StreamingServiceLogo name="Apple TV" bgColor="bg-gray-800" />
+      <StreamingServiceLogo name="prime video" bgColor="bg-blue-500" />
+      <StreamingServiceLogo name="max" bgColor="bg-purple-700" />
+      <StreamingServiceLogo name="crunchyroll" bgColor="bg-orange-500" />
+    </section>
+  </div>
+</div>
+
+      <section className="mb-12 max-w-7xl mx-auto mt-12">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-bold">Top Filmes Populares</h3>
           <a href="#" className="text-red-500 hover:text-red-400">
@@ -117,6 +151,18 @@ const HomePage = () => {
     </main>
   );
 };
+
+interface StreamingServiceLogoProps {
+  name: string;
+  bgColor: string;
+}
+
+const StreamingServiceLogo = ({ name, bgColor }: StreamingServiceLogoProps) => (
+  <div className={`${bgColor} w-24 h-12 flex items-center justify-center rounded`}>
+    <span className="">{name}</span>
+  </div>
+);
+
 
 // Componente para renderizar filmes
 interface MovieCardProps {
